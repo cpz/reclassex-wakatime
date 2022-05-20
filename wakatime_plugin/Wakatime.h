@@ -1,6 +1,6 @@
 #pragma once
 
-#define VERSION L"1.0"
+#define VERSION L"1.0a"
 
 /**
  * \brief 

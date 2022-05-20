@@ -7,10 +7,11 @@
 
 Wakatime* g_wakatime = new Wakatime();
 
+constexpr int kDelayBeforeSend = 120 * CLOCKS_PER_SEC;
 
-bool is_file_exist(const std::wstring& fileName)
+bool is_file_exist(const std::wstring& file_name)
 {
-    const std::ifstream infile(fileName);
+    const std::ifstream infile(file_name);
     return infile.good();
 }
 
@@ -35,8 +36,8 @@ void GetReclassVersion(wchar_t* version)
     }
 
     UINT ui_ver_len = 0;
-    VS_FIXEDFILEINFO* p_fixed_info = 0;
-    if (VerQueryValue(&data[0], const_cast<LPTSTR>(L"\\"), reinterpret_cast<void**>(&p_fixed_info), &ui_ver_len) == 0)
+    VS_FIXEDFILEINFO* p_fixed_info = nullptr;
+    if (VerQueryValue(&data[0], L"\\", reinterpret_cast<void**>(&p_fixed_info), &ui_ver_len) == 0)
     {
         ReClassPrintConsole(L"[Wakatime] Can't obtain ProductVersion from resources\n");
         return;
@@ -129,7 +130,7 @@ bool CreateCli(const wchar_t* psz_title, const wchar_t* psz_command)
 {
     PROCESS_INFORMATION process_info = {};
     STARTUPINFO start_info = {};
-    DWORD error_code = 0;
+    DWORD error_code;
 
     start_info.cb = sizeof(start_info);
     start_info.lpTitle = (psz_title) ? const_cast<wchar_t*>(psz_title) : const_cast<wchar_t*>(psz_command);
@@ -162,7 +163,7 @@ void Wakatime::GenerateCmdAndExecute(const bool is_write) const
 {
     wchar_t command_line[2048 * 2];
     wsprintf(command_line,
-             L"%s --plugin \"reclassex/%s reclassex-wakatime/%s\" --project %s --entity \"%s\" --alternate-language Binary --category \"debugging\"%s",
+             L"%s --plugin \"reclassex/%s reclassex-wakatime/%s\" --project \"%s\" --entity \"%s\" --alternate-language \"Binary\" --category \"debugging\"%s",
              m_cli_path_.c_str(),
              m_reclass_version_.c_str(),
              VERSION,
@@ -179,10 +180,12 @@ void Wakatime::GenerateCmdAndExecute(const bool is_write) const
 
 void Wakatime::Heartbeat(const bool is_write)
 {
-    if (m_cli_path_.empty() || m_api_key_.empty())
+    const auto time_elapsed = current_time_ - last_time_heartbeat_;
+
+    if (m_cli_path_.empty() || m_api_key_.empty() || time_elapsed < NULL)
         return;
 
-    if (!is_write && (current_time_ - last_time_heartbeat_ > 120 * CLOCKS_PER_SEC))
+    if (!is_write && time_elapsed > kDelayBeforeSend)
     {
         GenerateCmdAndExecute(is_write);
         last_time_heartbeat_ = GetTickCount64();

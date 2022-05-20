@@ -125,7 +125,7 @@ PluginSettingsDlg(
                     g_wakatime->UpdateApiKey(m_api_key);
                     ReClassPrintConsole(L"[WakaTime] Updated API Key: %s", g_wakatime->m_api_key_.c_str());
                     ReClassPrintConsole(L"[WakaTime] Recieved update api key event.");
-                    EndDialog(hWnd, LOWORD(wParam));
+                    EndDialog(hWnd, 0);
                 }
             }
         }
@@ -135,6 +135,8 @@ PluginSettingsDlg(
         {
             EndDialog(hWnd, 0);
         }
+        break;
+    default:
         break;
     }
     return FALSE;
