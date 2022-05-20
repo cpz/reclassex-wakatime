@@ -162,13 +162,13 @@ void Wakatime::GenerateCmdAndExecute(const bool is_write) const
 {
     wchar_t command_line[2048 * 2];
     wsprintf(command_line,
-             L"%s --plugin \"reclass-ex/%s reclass-ex-wakatime/%s\" --project %s --entity \"%s\" --language ReclassEx --category \"code reviewing\" --key %s %s",
+             L"%s --plugin \"reclassex/%s reclassex-wakatime/%s\" --project %s --entity \"%s\" --alternate-language Binary --category \"debugging\"%s",
              m_cli_path_.c_str(),
-             m_reclass_version_.c_str(), VERSION,
+             m_reclass_version_.c_str(),
+             VERSION,
              m_project_.c_str(),
              m_entity_.c_str(),
-             m_api_key_.c_str(),
-             is_write ? L"--write" : L""
+             is_write ? L" --write" : L""
     );
 
 #ifdef __DEBUG
