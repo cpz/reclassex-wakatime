@@ -8,7 +8,7 @@
  or build by yourself
 1. Register at [WakaTime](https://wakatime.com) and copy your [API Key](https://wakatime.com/settings/account)
 2. Download this repo
-3. Extract `wakatime_plugin.rc-plugin64` and `wakatime_plugin.rc-plugin` near ReclassEx execatubles in folder `/plugins`
+3. Extract `wakatime_plugin.rc-plugin64` and `wakatime_plugin.rc-plugin` near ReclassEx executables in folder `/plugins`
 4. Start ReclassEx
 5. Go to plugins and setup api key
 6. That's pretty much it.
@@ -34,4 +34,4 @@ Any contributions you make are **greatly appreciated**.
 
 ### Thanks to:
 [ajkhoury/ReClassEx](https://github.com/ajkhoury/ReClassEx/) - for ReclassEx\
-[@es3n1n](https://github.com/es3n1n) - cos he is 🤡
+[@es3n1n](https://github.com/es3n1n) - cos he is 🤡  (circus employee)
