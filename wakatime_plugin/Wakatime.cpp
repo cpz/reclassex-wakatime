@@ -19,7 +19,6 @@ void GetReclassVersion(wchar_t* version)
     wchar_t raw_path_name[MAX_PATH];
     GetModuleFileName(nullptr, raw_path_name, MAX_PATH);
 
-    // allocate a block of memory for the version info
     DWORD dummy;
     const DWORD dw_size = GetFileVersionInfoSize(raw_path_name, &dummy);
     if (dw_size == 0)
@@ -29,8 +28,6 @@ void GetReclassVersion(wchar_t* version)
     }
 
     std::vector<BYTE> data(dw_size);
-
-    // load the version info
     if (!GetFileVersionInfo(raw_path_name, NULL, dw_size, &data[0]))
     {
         ReClassPrintConsole(L"[Wakatime] GetFileVersionInfo failed with error %d", GetLastError());
@@ -54,18 +51,18 @@ void GetReclassVersion(wchar_t* version)
 
 Wakatime::Wakatime()
 {
-    std::wstring home_path;
-    if (!SUCCEEDED(SHGetFolderPathW(NULL, CSIDL_PROFILE, NULL, 0, &home_path.front())))
+    wchar_t home_path[MAX_PATH + 1];
+    if (!SUCCEEDED(SHGetFolderPathW(NULL, CSIDL_PROFILE, NULL, 0, home_path)))
     {
         MessageBoxW(nullptr, L"[Wakatime] Can't obtain home path!", L"Wakatime", 0);
     }
     else
     {
-        ReClassPrintConsole(L"[Wakatime] Home path: %s", home_path.c_str());
+        ReClassPrintConsole(L"[Wakatime] Home path: %s", home_path);
     }
 
     wchar_t cli_path[MAX_PATH];
-    wsprintf(cli_path, L"%s\\.wakatime\\wakatime-cli\\wakatime-cli.exe", home_path.c_str());
+    wsprintf(cli_path, L"%s\\.wakatime\\wakatime-cli\\wakatime-cli.exe", home_path);
     ReClassPrintConsole(L"[Wakatime] CLI path: %s", cli_path);
 
     if (!is_file_exist(cli_path))
@@ -78,7 +75,7 @@ Wakatime::Wakatime()
     m_cli_path_ = cli_path;
 
     wchar_t config_path[MAX_PATH];
-    wsprintf(config_path, L"%s\\.wakatime.cfg", home_path.c_str());
+    wsprintf(config_path, L"%s\\.wakatime.cfg", home_path);
     ReClassPrintConsole(L"[Wakatime] Config path: %s", config_path);
 
     if (!is_file_exist(config_path))
