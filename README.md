@@ -19,7 +19,7 @@
 ![img3](https://cdn.upload.systems/uploads/NQHLWkEN.png)
 
 ### Troubleshooting:
-1. If by any chance on the first run ida doesn't ask you for your api key and **there are no errors in console**, that means that you've used wakatime plugins before and your apikey was already set in `~\.wakatime.cfg`
+1. If by any chance on the first run ReclassEx doesn't ask you for your api key and **there are no errors in console**, that means that you've used wakatime plugins before and your apikey was already set in `~\.wakatime.cfg`
 
 If you're reaching an unknown error you are free to open an issue.
 
